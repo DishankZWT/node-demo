@@ -1,19 +1,25 @@
-const readline = require('node:readline');
-
-const rl = readline.createInterface({
-    input:process.stdin,
-    output:process.stdout,
-});
-
-rl.question(`input time:`, inputTime => {
-    const timer = setInterval( () => {
-        inputTime--;
-        console.log(`${inputTime}`);
-        if(inputTime == 0){
-            console.log(`time out`);
-            clearInterval(timer);
-        }
-
-    } , 1000);
+const countDownTimer = process.argv[2];
+if(isNaN(countDownTimer) || countDownTimer < 0)
+{
+    console.log('invalid input');
+}
+else if(countDownTimer == 0){
+    console.log(`time out`);
+}
+else{
+    try {
+        let intTime = Math.round(countDownTimer);
+        const timer = setInterval( () => {
+            intTime--;
+            console.log(`${intTime}`);
+            if(intTime == 0){
+                console.log(`time out`);
+                clearInterval(timer);
+            }
     
-});
+        } , 1000);
+    } 
+    catch (error) {
+        console.log(error);
+    }
+}

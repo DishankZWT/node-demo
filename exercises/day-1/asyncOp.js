@@ -1,24 +1,33 @@
-const dataFetch = true;
+const userInput = process.argv[2];
 
-function fetchData(dataFetch){
+if(userInput == 'true' || userInput == 'false'){
+    let dataFetch = userInput;
 
-    const asyncOp = new Promise( (resolve , reject) => {
-        setTimeout( () => {
-            //busy pretend
+    function fetchData(dataFetch){
 
-            if(dataFetch == true){
-                resolve('data fetched successfully');
-            }
-            else{
-                reject('error!failed to fetch data');
-            }
+        const asyncOp = new Promise( (resolve , reject) => {
+            setTimeout( () => {
+                //busy pretend
+    
+                if(dataFetch == 'true'){
+                    resolve('data fetched successfully');
+                }
+                else{
+                    reject('error!failed to fetch data');
+                }
+    
+            } , 2000);
+    
+        })
+    
+        return asyncOp;
+    }
+    
+    fetchData(dataFetch).then( (data) => {console.log(data)})
+                        .catch( (err) => {console.log(err)});
 
-        } , 2000);
-
-    })
-
-    return asyncOp;
+}
+else{
+    console.log('invalid input');
 }
 
-fetchData(dataFetch).then( (data) => {console.log(data)})
-                    .catch( (err) => {console.log(err)});
