@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { resolve } = require('path');
+const path = require('path');
 const readline = require('readline');
 let userPath;
 
@@ -9,27 +9,36 @@ const rl = readline.createInterface({
 })
 
 rl.question('input directory path:' , (path) => {
-    try {
-        userPath = path; 
-        if( fs.existsSync(userPath)){
-            fs.readdir(userPath , (err , files) => {
-                files.forEach( (file) => {
-                    console.log(file)
-                })
-                if(err){
-                    console.log(err);
-                }
-            });
+    userPath = path; 
+
+    rl.question('input extension:' , (extension) => {
+        inputExtension = extension; 
+
+        try {
+    
+            if( fs.existsSync(userPath)){
+                fs.readdir(userPath , (err , files) => {
+                    
+                    files.forEach( (file) => {
+                        if(file.endsWith(inputExtension)){
+                            console.log(file);
+                        }
+                    })
+                    if(err){
+                        console.log(err);
+                    }
+                });
+            }
+            else{
+                console.log('directory does not exist');
+            }
+            
+        } 
+        catch (error) {
+            console.log(error)
         }
-        else{
-            console.log('directory does not exist');
-        }
-        
+
         rl.close();
-    } 
-    catch (error) {
-        console.log(error)
-    }
+    });
+
 });
-
-
