@@ -5,13 +5,14 @@ const { default: users } = require('../../constants');
 const dotenv = require('dotenv').config();
 app.use(express.json());
 const port = process.env.APP_PORT;
-const {getUserById, emailValidator, roleValidator} = require('./src/validators');
+const { emailValidator, roleValidator, getUserById} = require('./src/validators');
+const { filterUsers } = require('./src/filters');
 
 app.get('/' , (req , res) => {
     res.send('Welcome to the User Management API!');
 });
 
-app.get('/users' , (req, res) => {
+app.get('/users' , filterUsers , (req, res) => {
     res.status(200).send(users);
 });
 
@@ -19,7 +20,6 @@ app.get('/users/:id' , getUserById , (req, res) => {
     const userId = req.params.id;
     users.forEach(element => {
         if(element.id == userId){
-            console.log("I am in");
             return res.status(200).send(element);
         }
     }); 
@@ -40,17 +40,22 @@ app.post('/users' , emailValidator, roleValidator, (req, res) => {
 });
 
 app.patch('/users/:id' , (req, res) => {
+    let ifExists = false;
     users.forEach(element => {        
         if(req.params.id == element.id){
+            ifExists = true;
             const updateUser = {
                 ...element,
                 ...req.body
             };
             let temp = users.indexOf(element)
             users[temp] = updateUser;
-            return res.send(users[temp]);
+            return res.status(200).json({user : users[temp]}); 
         }
     });
+    if(!ifExists){
+        return res.status(404).json({message:"No Such User Exists!"});
+    }
 });
 
 app.delete('/users/:id' , (req, res) => {
@@ -66,6 +71,3 @@ app.delete('/users/:id' , (req, res) => {
 app.listen(port , () => {
     console.log(`server is running at http://localhost:${port}`);
 });
-
-
-// joysche,a, appschema
