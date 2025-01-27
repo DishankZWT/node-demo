@@ -1,12 +1,32 @@
 const express = require('express');
+
 const app = express();
-const path = require('path');
-const { default: users } = require('../../constants');
-const dotenv = require('dotenv').config();
+
 app.use(express.json());
+
+const path = require('path');
+const dotenv = require('dotenv').config();
 const port = process.env.APP_PORT;
+var time = require('express-timestamp');
+app.use(time.init);
+const { default: users } = require('../../constants');
 const { emailValidator, roleValidator, getUserById} = require('./src/validators');
 const { filterUsers } = require('./src/filters');
+const { logger } = require('./src/logger');
+
+app.use(express.urlencoded({extended: false}));
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: function (req, file, cb){
+        return cb(null, './media');
+    },
+    filename: function (req, file, cb){
+        return cb(null, `${Date.now()}-${file.originalname}`);
+    }
+});
+const upload = multer({storage});
+
+app.use(logger);
 
 app.get('/' , (req , res) => {
     res.send('Welcome to the User Management API!');
@@ -66,6 +86,11 @@ app.delete('/users/:id' , (req, res) => {
             return res.send('successfully deleted');
         }
     });
+});
+
+app.post('/upload-image' ,upload.single('inputImage'), (req, res) => {
+    console.log(req.file);
+    res.send(`image ${req.file.filename} is saved successfully`);
 });
 
 app.listen(port , () => {

@@ -4,7 +4,8 @@
   "description": "this is the demo exercises, practices and comperahansive study and implementation og node.js and javascript",
   "main": "constants.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "day-3": "node exercises/day-3/index.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,9 @@
   "homepage": "https://github.com/DishankZWT/node-demo#readme",
   "dependencies": {
     "dotenv": "^16.4.7",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "express-timestamp": "^0.1.4",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.12.0"
   }
 }

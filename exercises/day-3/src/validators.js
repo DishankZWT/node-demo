@@ -41,4 +41,15 @@ function roleValidator(req, res, next) {
     next();
 }
 
-module.exports = {getUserById, emailValidator, roleValidator};
+function imageValidator(req, res, next){
+    // if(req.file.size > 2*1024*1024){
+    //     return res.send('file size is too big')
+    // }
+    // let temp = req.file.originalname;
+    // if(temp.endsWith(".png") || temp.endsWith(".jpg") || temp.endsWith(".jpeg")){
+    //     return next();
+    // }
+    // return res.send('invalid file format');
+}
+
+module.exports = {getUserById, emailValidator, roleValidator, imageValidator};

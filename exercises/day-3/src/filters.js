@@ -3,17 +3,14 @@ const { default: users } = require('./../../../constants');
 function filterUsers( req, res, next){ 
 
     if( Object.keys(req.query).length === 0 ){
-        console.log('hello');
         return next();
     }
     const userQuery = req.query;
-    console.log(typeof(userQuery));
+    for(let key in userQuery){
+        let filtered = users.filter(f => String(f[key]) == userQuery[key]);
+        console.log(filtered);
+    }
     next();
-    // const filteredList = users.filter(ele => { 
-    //     const temp = { ...ele , ...userQuery};
-    //     temp == ele;
-    // });
-    // res.status(200).send(filteredList);
 }
 
 module.exports = { filterUsers };
