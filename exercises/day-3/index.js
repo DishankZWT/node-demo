@@ -9,7 +9,7 @@ const dotenv = require('dotenv').config();
 const port = process.env.APP_PORT;
 var time = require('express-timestamp');
 app.use(time.init);
-const { default: users } = require('../../constants');
+const { users } = require('../../constants');
 const { emailValidator, roleValidator, getUserById} = require('./src/validators');
 const { filterUsers } = require('./src/filters');
 const { logger } = require('./src/logger');
@@ -32,7 +32,7 @@ app.get('/' , (req , res) => {
     res.send('Welcome to the User Management API!');
 });
 
-app.get('/users' , filterUsers , (req, res) => {
+app.get('/users' , filterUsers , (req, res) => {    
     res.status(200).send(users);
 });
 
