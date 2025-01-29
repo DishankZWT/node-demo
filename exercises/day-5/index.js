@@ -1,7 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv').config();
 const path = require('path');
-const { getUserProfile, getUserInfo, createUserProfile, deleteUserProfile, updateUserProfile, deleteUserImages } = require('./src/database');
+const { getUserProfile, getUserInfo, createUserProfile, deleteUserProfile, updateUserProfile, deleteUserImages} = require('./src/database');
 var time = require('express-timestamp');
 
 const app = express();
@@ -50,7 +50,7 @@ app.delete('/user-profile/:id', async (req, res) => {
 //delete user images
 app.delete('/user-images/:userId', async(req, res) => {
     const userId = req.params.id;
-    const users = await deleteUserImages(id);
+    const users = await deleteUserImages(userId);
     res.send(users);
 });
 

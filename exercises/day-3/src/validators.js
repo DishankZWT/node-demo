@@ -41,15 +41,17 @@ function roleValidator(req, res, next) {
     next();
 }
 
-function imageValidator(req, res, next){
-    // if(req.file.size > 2*1024*1024){
-    //     return res.send('file size is too big')
-    // }
-    // let temp = req.file.originalname;
-    // if(temp.endsWith(".png") || temp.endsWith(".jpg") || temp.endsWith(".jpeg")){
-    //     return next();
-    // }
-    // return res.send('invalid file format');
-}
+const imageValidator = (req, res, next) => {
+    if (!req.file) return res.status(400).json({ error: "Image file is required." });
+    const { mimetype, size } = req.file;
+    const allowedMimeTypes = ["image/png", "image/jpg", "image/jpeg", "image/img"];
+    if (!allowedMimeTypes.includes(mimetype)) {
+        return res.status(400).json({ error: "Invalid file type. Allowed formats: png, jpg, jpeg, img." });
+    }
+    if (size > 2 * 1024 * 1024) {
+        return res.status(400).json({ error: "File size exceeds 2MB limit." });
+    }
+    next();
+};
 
 module.exports = {getUserById, emailValidator, roleValidator, imageValidator};

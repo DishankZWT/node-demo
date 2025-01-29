@@ -10,18 +10,6 @@ CREATE TABLE user_images (
     FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
 );
 
-DELIMITER $$
-
-CREATE TRIGGER after_user_insert
-AFTER INSERT ON users
-FOR EACH ROW
-BEGIN
-    INSERT INTO user_images (userId, imageName, path, mimeType, extension, size, createdAt)
-    VALUES (NEW.id, 'default_image', '/images/default_image.jpg', 'image/jpeg', '.jpg', 0, NOW());
-END $$
-
-DELIMITER ;
-
 INSERT INTO user_images (userId, imageName, path, mimeType, extension, size)
 VALUES
 (1, 'profile_pic_1', '/images/alice/profile_pic_1.jpg', 'image/jpeg', '.jpg', 204800),
