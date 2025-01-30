@@ -24,4 +24,8 @@ async function userProfileValidator(req, res, next) {
     .catch((error) => res.status(500).json({ error }));
 }
 
-module.exports = { idValidator, userValidator, userProfileValidator };
+module.exports = {
+  idValidator,
+  userValidator,
+  userProfileValidator,
+};
