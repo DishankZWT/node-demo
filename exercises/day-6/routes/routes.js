@@ -1,26 +1,38 @@
 const express = require("express");
 const path = require("path");
+const { upload } = require("../utilities/multer");
 
 //Router
 const router = express.Router();
 
 //Controllers
-const userController = require("../controllers/controllers");
+const userController = require("../controllers/userController");
+const userImageController = require("../controllers/userImageController");
+const userProfileController = require("../controllers/userProfileController");
 
-// User GET ROUTES
+// GET ROUTES
 router.get("/", userController.home);
 router.get("/users", userController.getSingleUser);
 router.get("/users/:id", userController.getUsers);
-// router.get("/userInfo/:userId", userController.getUserInfo);
+router.get("/userInfo/:id", userController.getUsersInfo);
+router.get("/user-profile/:userId", userProfileController.getUsers);
 
-// User POST Routes
+// POST Routes
 router.post("/users", userController.createUsers);
+router.post(
+  "/user-images",
+  upload.single("image"),
+  userImageController.createUsers
+);
+router.post("/user-profile", userProfileController.createUsers);
 
-// User PATCH Routes
+// PATCH/PUT Routes
 router.patch("/users/:id", userController.updateUsers);
+router.put("/user-profile/:userId", userProfileController.updateUsers);
 
-// User DELETE Routes
+// DELETE Routes
 router.delete("/users/:id", userController.deleteUsers);
-// router.delete("/userInfo/:userId", userController.deleteUserInfo);
+router.delete("/user-images/:userId", userImageController.deleteUsers);
+router.delete("/user-profile/:userId", userProfileController.deleteUsers);
 
 module.exports = router;

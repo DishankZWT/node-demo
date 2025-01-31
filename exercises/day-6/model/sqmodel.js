@@ -36,6 +36,7 @@ const users = sequelize.define(
     },
     isActive: {
       type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
   },
   {
@@ -106,7 +107,7 @@ const user_profiles = sequelize.define(
     },
   },
   {
-    timestamps: false,
+    timestamps: true,
     freezeTableName: true,
   }
 );

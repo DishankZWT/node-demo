@@ -1,33 +1,46 @@
 const {
   getOneUser,
   getUser,
+  getUserInfo,
   insertUser,
   updateUser,
   deleteUser,
-} = require("../crud/crud");
+} = require("../crud/userCrud");
 
+//welcome page
 async function home(req, res) {
   return res
     .status(200)
     .json({ message: "Welcome to the User Management API!" });
 }
 
-//get list of all users
+//get list of all users from users table
 async function getSingleUser(req, res) {
   try {
-    const getSingleUser = await getOneUser();
+    const getSingleUser = await getOneUser(req.query);
     return res.status(200).json(getSingleUser);
   } catch (error) {
     return res.status(400).json(error);
   }
 }
 
-//get users by id from sqmodel table
+//get users by id from users table
 async function getUsers(req, res) {
   try {
     const id = req.params.id;
     const getUsers = await getUser(id);
     return res.status(200).json(getUsers);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+}
+
+//get user information from all tables(users, user_images, user_profiles)
+async function getUsersInfo(req, res) {
+  try {
+    const id = req.params.id;
+    const getInfo = await getUserInfo(id);
+    return res.status(200).json(getInfo);
   } catch (error) {
     return res.status(400).json(error);
   }
@@ -57,7 +70,7 @@ async function updateUsers(req, res) {
   }
 }
 
-//delete user from uses able (user_images and user_profile remove on cascade)
+//delete user from uses table (user_images and user_profile remove on cascade)
 async function deleteUsers(req, res) {
   try {
     const id = req.params.id;
@@ -73,6 +86,7 @@ module.exports = {
   home,
   getSingleUser,
   getUsers,
+  getUsersInfo,
   createUsers,
   updateUsers,
   deleteUsers,
