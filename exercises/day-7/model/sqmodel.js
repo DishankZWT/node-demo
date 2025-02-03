@@ -42,6 +42,10 @@ const users = sequelize.define(
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
   },
   {
     timestamps: false,
@@ -111,7 +115,7 @@ const user_profiles = sequelize.define(
     },
   },
   {
-    timestamps: true,
+    timestamps: false,
     freezeTableName: true,
   }
 );
