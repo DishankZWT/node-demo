@@ -7,21 +7,21 @@ const jwt = require("jsonwebtoken");
 async function getOneUser(query) {
   const filter = {};
 
-  if (query.role) {
-    filter.role = query.role;
+  if (query?.role) {
+    filter.role = query?.role;
   }
-  if (query.isActive) {
-    filter.isActive = query.isActive;
+  if (query?.isActive) {
+    filter.isActive = query?.isActive;
   }
-  if (query.ageGt) {
-    filter.age = { [Op.gt]: Number(query.ageGt) };
+  if (query?.ageGt) {
+    filter.age = { [Op.gt]: Number(query?.ageGt) };
   }
 
-  const limit = Number(query.limit) || 5;
-  const offset = (query.page - 1) * limit || 0;
+  const limit = Number(query?.limit) || 5;
+  const offset = (query?.page - 1) * limit || 0;
 
-  const col = query.col || users.id;
-  const order = query.order || `ASC`;
+  const col = query?.col || "id";
+  const order = query?.order || `ASC`;
 
   return users
     .findAll({
@@ -84,11 +84,11 @@ async function userHash(inputId, inputPassword) {
 async function userVarify(inputId, inputPassword) {
   const user = await users.findByPk(inputId);
   const hash = user.dataValues.password;
-  console.log(hash);
-
   const isValid = bcrypt.compare(inputPassword, hash);
   if (isValid) {
-    const mytoken = jwt.sign({ inputId }, process.env.JWT_SECRET);
+    const mytoken = jwt.sign({ inputId }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
     console.log(mytoken);
     return mytoken;
   }

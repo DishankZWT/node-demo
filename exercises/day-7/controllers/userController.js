@@ -19,7 +19,7 @@ async function home(req, res) {
 //get list of all users from users table
 async function getSingleUser(req, res) {
   try {
-    const getSingleUser = await getOneUser(req.query);
+    const getSingleUser = await getOneUser(req?.query);
     return res.status(200).json(getSingleUser);
   } catch (error) {
     return res.status(400).json(error);
@@ -101,7 +101,6 @@ async function userLogin(req, res) {
     const { id, password } = req.body;
     const result = await userVarify(id, password);
     if (result) {
-      req.user = user;
       return res.status(200).json(`login successfull`);
     } else {
       return res.status(401).json(`invalid password`);

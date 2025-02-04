@@ -1,22 +1,24 @@
 const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv").config();
+require("dotenv").config();
 
 const authenticate = (req, res, next) => {
   const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+
+  const token = authHeader.split(" ")[1];
+  // console.log(token);
   if (!token) {
     return res
       .status(401)
       .json({ message: "Authorization token is required." });
   }
-
+  // console.log(process.env.JWT_SECRET);
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-      if (err) return res.status(403).json(`token not valid`);
-    });
-    req.user = decoded.user;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // console.log(decoded);
+    req.user = decoded;
     next();
   } catch (err) {
+    // console.log(err);
     return res.status(401).json({ message: "Invalid token." });
   }
 };
