@@ -9,8 +9,6 @@ async function updateUserProfile(req, res) {
       const newPassword = await bcrypt.hash(body.password, 10);
       dataBody.password = newPassword;
     }
-    console.log(dataBody, user);
-
     const update = await users.update(dataBody, {
       where: { id: user.id },
     });
@@ -22,8 +20,18 @@ async function updateUserProfile(req, res) {
 }
 
 async function getUserProfile(req, res) {
-  const userProfile = await users.findByPk(req.user.id);
-  return res.status(200).json({ userProfile });
+  try {
+    const userProfile = await users.findByPk(req.user.id);
+    const userInterface = {
+      ...userProfile,
+    };
+    delete userInterface.dataValues.password;
+    delete userInterface.dataValues.createdAt;
+    delete userInterface.dataValues.updatedAt;
+    return res.status(200).json(userInterface.dataValues);
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
 }
 
 module.exports = { updateUserProfile, getUserProfile };

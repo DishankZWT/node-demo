@@ -30,7 +30,6 @@ const users = sequelize.define(
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
     password: {
       type: DataTypes.STRING,
@@ -43,6 +42,39 @@ const users = sequelize.define(
   },
   {
     freezeTableName: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ["email"],
+        name: "unique_email_index",
+      },
+    ],
+  }
+);
+
+//sequelize model for categories table
+const categories = sequelize.define(
+  "categories",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    name: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
+  },
+  {
+    freezeTableName: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ["name"],
+        name: "unique_name_index",
+      },
+    ],
   }
 );
 
@@ -74,30 +106,14 @@ const products = sequelize.define(
     category_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: categories,
+        key: "id",
+      },
     },
     image_url: {
       type: DataTypes.STRING,
       defaultValue: null,
-    },
-  },
-  {
-    freezeTableName: true,
-  }
-);
-
-//sequelize model for categories table
-const categories = sequelize.define(
-  "categories",
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    name: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-      unique: true,
     },
   },
   {
@@ -116,9 +132,17 @@ const cart = sequelize.define(
     },
     user_id: {
       type: DataTypes.INTEGER,
+      references: {
+        model: users,
+        key: "id",
+      },
     },
     product_id: {
       type: DataTypes.INTEGER,
+      references: {
+        model: products,
+        key: "id",
+      },
     },
     quantity: {
       type: DataTypes.INTEGER,
@@ -131,6 +155,33 @@ const cart = sequelize.define(
 );
 
 //sequelize model for wishlist table
+const wishlist = sequelize.define(
+  "wishlist",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: users,
+        key: "id",
+      },
+    },
+    product_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: products,
+        key: "id",
+      },
+    },
+  },
+  {
+    freezeTableName: true,
+  }
+);
 
 //sequelize model for orders and order_items table (optional)
 
@@ -146,4 +197,4 @@ sequelize
   .then()
   .catch((err) => console.log(err));
 
-module.exports = { users, products, categories, cart };
+module.exports = { users, products, categories, cart, wishlist };
