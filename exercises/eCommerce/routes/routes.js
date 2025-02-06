@@ -27,11 +27,11 @@ router.post("/api/auth/login", authController.login);
 // customer routes
 router.get("/api/cart", authenticate, customerController.getCartItems);
 router.get("/api/wishlist", authenticate, customerController.getWishList);
-router.get("/api/orders", authenticate, customerController.getOrderHistory);
-router.get("/api/orders/:id", authenticate, customerController.getOrderDetails);
+router.get("/api/orders", authenticate, customerController.getOrderHistory); // (not tested)
+router.get("/api/orders/:id", authenticate, customerController.getOrderDetails); // (not tested)
 router.post("/api/cart", authenticate, customerController.addToCart);
 router.post("/api/wishlist", authenticate, customerController.addToWishList);
-// router.post("/api/orders", authenticate, customerController.placeOrder);           (optional)
+// router.post("/api/orders", authenticate, customerController.placeOrder);           (optional)(not complete)
 router.delete("/api/cart/:id", authenticate, customerController.removeFromCart);
 router.delete(
   "/api/wishlist/:id",
@@ -62,7 +62,7 @@ router.patch(
   upload.single("image"),
   adminController.updateProduct
 );
-// router.put("/api/orders/:id/status", adminController.updateOrderStatus);               (optional)
+// router.put("/api/orders/:id/status", adminController.updateOrderStatus);               (optional)(not complete)
 router.delete("/api/products/:id", authenticate, adminController.deleteProduct);
 
 module.exports = router;
