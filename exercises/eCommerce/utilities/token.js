@@ -8,7 +8,8 @@ async function userHash(body) {
   try {
     const newPassword = await bcrypt.hash(body.password, 10);
     const isExist = await users.findAll({ where: { email: body.email } });
-    if (isExist == []) {
+    console.log(isExist);
+    if (isExist.length == 0) {
       body.password = newPassword;
       return users
         .create(body)
@@ -37,28 +38,4 @@ async function tokenSign(email, password) {
   return;
 }
 
-async function checkCredentials(dataBody) {
-  const userSchema = yup.object({
-    first_name: yup.string().required(),
-    last_name: yup.string().required(),
-    email: yup.string().email().required(),
-    password: yup.string().required(),
-    role: yup.mixed().oneOf(["admin", "customer"]).required(),
-  });
-  const validation = await userSchema.validate(dataBody, { abortEarly: false });
-  return validation;
-}
-
-async function productCredentials(dataBody) {
-  const productSchema = yup.object({
-    name: yup.string().required(),
-    price: yup.number().required(),
-    category_id: yup.number().integer().required(),
-  });
-  const validation = await productSchema.validate(dataBody, {
-    abortEarly: false,
-  });
-  return validation;
-}
-
-module.exports = { userHash, tokenSign, checkCredentials, productCredentials };
+module.exports = { userHash, tokenSign };

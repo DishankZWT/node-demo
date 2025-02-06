@@ -9,6 +9,7 @@ const publicController = require("../controllers/publicController");
 const userController = require("../controllers/userController");
 const adminController = require("../controllers/adminController");
 const customerController = require("../controllers/customerController");
+const authController = require("../controllers/authController");
 
 //middlewares
 const authenticate = require("../middleware/tokenCheck");
@@ -18,17 +19,19 @@ router.get("/", publicController.home);
 router.get("/api/categories", publicController.getCategories);
 router.get("/api/products", publicController.getProducts);
 router.get("/api/products/:id", publicController.getProductById);
-router.post("/api/auth/register", publicController.signup);
-router.post("/api/auth/login", publicController.login);
+
+// authorization routes
+router.post("/api/auth/register", authController.signup);
+router.post("/api/auth/login", authController.login);
 
 // customer routes
 router.get("/api/cart", authenticate, customerController.getCartItems);
 router.get("/api/wishlist", authenticate, customerController.getWishList);
-// router.get("/api/orders", customerController.getOrderHistory);   (optional)
-// router.get("/api/orders/:id", customerController.getOrderDetails);   (optional)
+router.get("/api/orders", authenticate, customerController.getOrderHistory);
+router.get("/api/orders/:id", authenticate, customerController.getOrderDetails);
 router.post("/api/cart", authenticate, customerController.addToCart);
 router.post("/api/wishlist", authenticate, customerController.addToWishList);
-// router.post("/api/orders", customerController.placeOrder);   (optional)
+// router.post("/api/orders", authenticate, customerController.placeOrder);           (optional)
 router.delete("/api/cart/:id", authenticate, customerController.removeFromCart);
 router.delete(
   "/api/wishlist/:id",
@@ -41,7 +44,7 @@ router.get("/api/users/profile", authenticate, userController.getUserProfile);
 router.put(
   "/api/users/profile",
   authenticate,
-  userController.updateUserProfile // admin can change customer profile (later)
+  userController.updateUserProfile
 );
 
 // admin routes
@@ -59,7 +62,7 @@ router.patch(
   upload.single("image"),
   adminController.updateProduct
 );
-// router.put("/api/orders/:id/status", adminController.updateOrderStatus);   (optional)
+// router.put("/api/orders/:id/status", adminController.updateOrderStatus);               (optional)
 router.delete("/api/products/:id", authenticate, adminController.deleteProduct);
 
 module.exports = router;

@@ -10,7 +10,7 @@
     "day-5": "node exercises/day-5/index.js",
     "day-6": "node exercises/day-6/index.js",
     "day-7": "node exercises/day-7/index.js",
-    "project": "node exercises/EcommerceApplication/index.js"
+    "project": "node exercises/eCommerce/index.js"
   },
   "repository": {
     "type": "git",

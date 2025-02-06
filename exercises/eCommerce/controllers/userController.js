@@ -1,6 +1,7 @@
 const { users } = require("../db/dbmodel");
 const bcrypt = require("bcrypt");
 
+// both customer and admin can update their profile
 async function updateUserProfile(req, res) {
   try {
     const user = req.user;
@@ -19,6 +20,7 @@ async function updateUserProfile(req, res) {
   }
 }
 
+//both customer and admin can get their profile
 async function getUserProfile(req, res) {
   try {
     const userProfile = await users.findByPk(req.user.id);
